@@ -5,7 +5,7 @@
         e.push(n)
     }
     if (n) new APlayer({container: document.getElementById("aplayer"), mini: !0, audio: e}); else if (t) {
-        new APlayer({container: document.getElementById("aplayer"), fixed: !0, lrcType: 3, audio: e});
+        new APlayer({container: document.getElementById("aplayer"), fixed: !0, lrcType: 3, audio: e, autoplay: 1});
         document.querySelector(".aplayer-icon-lrc").click()
     }
 }();
