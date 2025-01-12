@@ -50,6 +50,7 @@ body {
     -webkit-user-select: none;
     user-select: none;
     font-family: MiSans;
+    transition: background-color 0.2s ease;
 }
 
 .mi-sans {
@@ -123,6 +124,7 @@ h1 {
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         padding: 16px;
         background-color: #fff;
+        transition: background-color 0.2s ease;
     }
 
     #photo-tip {
@@ -182,4 +184,15 @@ h1 {
 .mdui-slider {
     padding: 10px 0;
     margin-bottom: 0;
+}
+
+#theme-toggle {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+}
+
+.mdui-theme-transition {
+    transition: background-color 0.2s ease;
 }

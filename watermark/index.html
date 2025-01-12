@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="renderer" content="webkit">
     <meta http-equiv="Cache-Control" content="no-siteapp">
-    <title>Photomark</title>
+    <title>WaterMark</title>
     <link href="https://cdn.staticfile.org/mdui/1.0.2/css/mdui.min.css" rel="stylesheet">
     <link href="./photomark.css" rel="stylesheet">
     <script src="https://cdn.staticfile.org/mdui/1.0.2/js/mdui.min.js"></script>
@@ -60,6 +60,7 @@
                     style="height: 256px; background-size: contain; background-repeat: no-repeat; background-position: center;"
                     onclick="chooseFile()">
                     <div class="mdui-center" style="text-align: center;">
+                        <i class="mdui-icon material-icons" style="font-size: 64px; opacity: .5;">camera_alt</i>
                         <div id="photo-tip">
                             <h1>
                                 <script>document.write(getI18n('drag_your_photo_to_here'))</script>
@@ -88,6 +89,9 @@
                             <select id="logo-select" class="mdui-select mdui-textfield-input">
                                 <option value="none">
                                     <script>document.write(getI18n('none'))</script>
+                                </option>
+                                <option value="sony">
+                                    <script>document.write(getI18n('sony'))</script>
                                 </option>
                                 <option value="hasselblad">
                                     <script>document.write(getI18n('hasselbled'))</script>
@@ -206,7 +210,7 @@
                     <p style="margin: 0;">
                         <script>document.write(getI18n('not_for_commercial_use'))</script>
                     </p>
-                    <p style="margin: 0;">😆 Made by yuange | 
+                    <p style="margin: 0;">😆Made by yuange | 
                         <!-- <a onclick="getContributors()" style="cursor: pointer;">
                             <script>document.write(getI18n('contributors'))</script>
                         </a> |  -->
@@ -218,6 +222,11 @@
                     </p>
                 </div>
                 <br />
+                <div class="mdui-float-right">
+                    <button id="theme-toggle" class="mdui-btn mdui-btn-icon mdui-ripple">
+                        <i class="mdui-icon material-icons">brightness_4</i>
+                    </button>
+                </div>
             </div>
         </div>
     </div>
@@ -681,28 +690,6 @@
             });
         }
 
-        if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-            $('body').addClass('mdui-theme-layout-dark');
-            $('#photo-area').removeClass('mdui-color-grey-200');
-            $('#photo-area').addClass('mdui-color-grey-700');
-        } else {
-            $('body').removeClass('mdui-theme-layout-dark');
-            $('#photo-area').removeClass('mdui-color-grey-700');
-            $('#photo-area').addClass('mdui-color-grey-200');
-        }
-
-        window.matchMedia('(prefers-color-scheme: dark)').addListener(e => {
-            if (e.matches) {
-                $('body').addClass('mdui-theme-layout-dark');
-                $('#photo-area').removeClass('mdui-color-grey-200');
-                $('#photo-area').addClass('mdui-color-grey-700');
-            } else {
-                $('body').removeClass('mdui-theme-layout-dark');
-                $('#photo-area').removeClass('mdui-color-grey-700');
-                $('#photo-area').addClass('mdui-color-grey-200');
-            }
-        });
-
         $('#photo-area').on('dragover', function (e) {
             e.preventDefault();
             e.stopPropagation();
@@ -788,6 +775,29 @@
             $('#quality-value').text(displayText);
             drawImage(true);
 
+        });
+
+        var isDarkMode = false; // 初始为浅色模式
+
+        $('#theme-toggle').on('click', function () {
+            $('body').addClass('mdui-theme-transition');
+            $('#photo-area').addClass('mdui-theme-transition');
+            setTimeout(() => {
+                $('body').removeClass('mdui-theme-transition');
+                $('#photo-area').removeClass('mdui-theme-transition');
+            }, 300);
+            if (isDarkMode) {
+                $('body').removeClass('mdui-theme-layout-dark');
+                $('#photo-area').removeClass('mdui-color-grey-700');
+                $('#photo-area').addClass('mdui-color-grey-200');
+                $('#theme-toggle i').text('brightness_4'); // 切换为浅色模式图标
+            } else {
+                $('body').addClass('mdui-theme-layout-dark');
+                $('#photo-area').removeClass('mdui-color-grey-200');
+                $('#photo-area').addClass('mdui-color-grey-700');
+                $('#theme-toggle i').text('brightness_7'); // 切换为深色模式图标
+            }
+            isDarkMode = !isDarkMode;
         });
     </script>
 </body>
