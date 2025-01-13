@@ -608,9 +608,13 @@
 
                         // 当 logo Image 对象加载完成时
                         logoImage.onload = () => {
-                            var logoHeight = 280;
+                            var logoHeight = 250;
+                            var pianyi = 30;
+                            if ($('#logo-select').val() == 'sony') {
+                                pianyi = 200;
+                            }
                             // 将 logo 绘制到 canvas 上
-                            photoCtx.drawImage(logoImage, photoWidth - specLength - 600, photoHeight + 190, logoHeight, logoHeight);
+                            photoCtx.drawImage(logoImage, photoWidth - specLength - 600 - pianyi, photoHeight + 180 - (pianyi/2), logoHeight+pianyi, logoHeight+pianyi);
 
                             // 绘制 logo 分割线
                             photoCtx.moveTo(photoWidth - specLength - 280, photoHeight + 190);
@@ -625,29 +629,35 @@
                                 var exportQuality = Number($('#quality-slider input').val()) / 100;
                                 // 将 canvas 转换为 blob 对象
                                 photoCanvas.toBlob(canvasBlob => {
-                                    // 获取缩放比例
-                                    var zoom = parseFloat($('#zoom-select').val());
-
-                                    // 根据缩放比例和图片原始尺寸计算容器的宽度和高度
-                                    var containerWidth = photoImage.width * zoom;
-                                    var containerHeight = photoImage.height * zoom;
-
                                     // 设置 #photo-canvas-div 的样式
                                     $('#photo-canvas-div').css({
-                                        'width': containerWidth + 'px',  // 注意单位
-                                        'height': containerHeight + 'px', // 注意单位
                                         'display': 'flex',
                                         'justify-content': 'center',
                                         'align-items': 'center'
                                     });
 
-                                    $('#photo-preview').attr('width', '100%'); // 图片宽度占满容器
-                                    $('#photo-preview').attr('height', 'auto'); // 图片高度自动调整
+                                    if (photoCanvas.height > photoCanvas.width) {
+                                        $('#photo-canvas-div').css({
+                                            'width': 'auto',
+                                            'height': '700px'
+                                        });
+
+                                        $('#photo-preview').attr('width', 'auto'); // 图片宽度占满容器
+                                        $('#photo-preview').attr('height', '100%'); // 图片高度自动调整
+                                    } else {
+                                        $('#photo-canvas-div').css({
+                                            'width': '800px',
+                                            'height': 'auto'
+                                        });
+                                        $('#photo-preview').attr('width', '800px'); // 图片宽度自动调整
+                                        $('#photo-preview').attr('height', 'auto'); // 图片高度占满容器
+                                    }
 
                                     // 设置预览图的 src 属性
-                                    $('#photo-area').addClass('mdui-hidden');
-                                    $('#photo-canvas-div').removeClass('mdui-hidden');
                                     $('#photo-preview').attr('src', URL.createObjectURL(canvasBlob));
+                                    $('#photo-area').addClass('mdui-hidden');
+                                    $('#photo-container').removeClass('mdui-hidden');
+                                    $('#photo-canvas-div').removeClass('mdui-hidden');
                                 }, 'image/jpg', exportQuality);
                             } else {
                                 // 保存图片
@@ -661,12 +671,6 @@
                             var exportQuality = Number($('#quality-slider input').val()) / 100;
                             // 将 canvas 转换为 blob 对象
                             photoCanvas.toBlob(canvasBlob => {
-                                // 获取缩放比例
-                                var zoom = parseFloat($('#zoom-select').val());
-
-                                // 根据缩放比例和图片原始尺寸计算容器的宽度和高度
-                                var containerWidth = photoImage.width * zoom+200;
-                                var containerHeight = photoImage.height * zoom;
 
                                 // 设置 #photo-canvas-div 的样式
                                 $('#photo-canvas-div').css({
